@@ -7,7 +7,6 @@ export const Form = styled.form`
 
   input {
     flex: 1;
-    border: 1px solid #eee;
     padding: 10px 15px;
     border-radius: 4px;
     font-size: 16px;
@@ -72,4 +71,15 @@ export const List = styled.ul`
       text-decoration: none;
     }
   }
+`;
+
+export const Input = styled.input.attrs(props => ({
+  error: props.error,
+}))`
+  border: 1px solid #eee;
+  ${props =>
+    props.error &&
+    css`
+      border: 1px solid red;
+    `}
 `;
