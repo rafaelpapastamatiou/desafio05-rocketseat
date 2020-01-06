@@ -5,7 +5,14 @@ import { FaArrowRight, FaArrowLeft } from 'react-icons/fa';
 
 import api from '../../services/api';
 
-import { Loading, Owner, IssueList, PaginationContainer } from './styles';
+import {
+  Loading,
+  Owner,
+  IssueList,
+  PaginationContainer,
+  NextPageButton,
+  PreviousPageButton,
+} from './styles';
 import Container from '../../components/Container';
 
 export default class Repository extends Component {
@@ -21,14 +28,12 @@ export default class Repository extends Component {
     repository: {},
     issues: [],
     loading: true,
-    page: 1,
     state: 'all',
     per_page: 5,
-    hasMore: true,
   };
 
   componentDidMount() {
-    this.loadRepository();
+    this.setState({ page: 1, hasMore: true });
   }
 
   componentDidUpdate(_, prevState) {
@@ -51,7 +56,8 @@ export default class Repository extends Component {
 
   handleFilter = e => {
     const { state } = this.state;
-    if (state !== e.target.value) this.setState({ state: e.target.value });
+    if (state !== e.target.value)
+      this.setState({ page: 1, hasMore: true, state: e.target.value });
   };
 
   async loadRepository() {
@@ -68,7 +74,7 @@ export default class Repository extends Component {
         params: { state, per_page, page: page + 1 },
       }),
     ]);
-    console.log(nextPage.data);
+
     this.setState({
       repository: repository.data,
       issues: issues.data,
@@ -94,24 +100,25 @@ export default class Repository extends Component {
         </Owner>
 
         <PaginationContainer>
-          {page > 1 && (
-            <button
-              type="button"
-              className="previousPage"
-              onClick={this.handlePreviousPage}
-            >
-              <FaArrowLeft />
-            </button>
-          )}
-          {hasMore && (
-            <button
-              type="button"
-              className="nextPage"
-              onClick={this.handleNextPage}
-            >
-              <FaArrowRight />
-            </button>
-          )}
+          <PreviousPageButton
+            type="button"
+            className="previousPage"
+            disabled={!(page > 1)}
+            onClick={this.handlePreviousPage}
+          >
+            <FaArrowLeft />
+          </PreviousPageButton>
+
+          <NextPageButton
+            type="button"
+            className="nextPage"
+            disabled={!hasMore}
+            onClick={this.handleNextPage}
+          >
+            <FaArrowRight />
+          </NextPageButton>
+
+          <span className="page">Página: {page}</span>
           <select
             className="state"
             defaultValue={state}

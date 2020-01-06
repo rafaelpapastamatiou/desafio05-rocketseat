@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const Loading = styled.div`
   color: #fff;
@@ -114,8 +114,7 @@ export const PaginationContainer = styled.div`
   }
 
   button + .nextPage {
-    margin-left: 10px;
-    padding-left: 10px;
+    margin-left: 20px;
   }
 
   svg {
@@ -124,7 +123,6 @@ export const PaginationContainer = styled.div`
   }
 
   .state {
-    margin-left: auto;
     padding: 5px;
     border: 2px solid #7169c1;
     color: #7159c1;
@@ -132,4 +130,36 @@ export const PaginationContainer = styled.div`
     font-size: 14px;
     font-weight: 600;
   }
+
+  .page {
+    margin-left: auto;
+    margin-right: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #7159c1;
+  }
+`;
+
+export const NextPageButton = styled.button.attrs(props => ({
+  disabled: props.disabled,
+}))`
+  ${props =>
+    props.disabled &&
+    css`
+      cursor: not-allowed;
+      opacity: 0.6;
+      pointer-events: none;
+    `}
+`;
+
+export const PreviousPageButton = styled.button.attrs(props => ({
+  disabled: props.disabled,
+}))`
+  ${props =>
+    props.disabled &&
+    css`
+      cursor: not-allowed;
+      opacity: 0.6;
+      pointer-events: none;
+    `}
 `;
